@@ -1,0 +1,25 @@
+%{
+    #include<stdio.h>
+    int wordCount=0,lineCount=0,spaceCount=0,charCount=0;
+%}
+
+%%
+[\n]      {lineCount++; }
+[^\n]+    {wordCount++; charCount+=yyleng; }
+[ ]       {spaceCount++; }
+%%
+
+int yywrap(void)
+{
+    return 1;
+}
+int main()
+{
+    yyin=fopen("input.txt","r");
+    yylex();
+    printf("\nNo of words : %d",wordCount);
+    printf("\nNo of lines : %d",lineCount);
+    printf("\nNo of space : %d",spaceCount);
+    printf("\nNo of char : %d",charCount);
+    return 0;
+}

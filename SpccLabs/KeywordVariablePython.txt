@@ -1,0 +1,34 @@
+keywords=['void','int','main()','double','else','long','switch','break','enum','printf','scanf']
+preprocessor=['#include<stdio.h>','#include<conio.h>','#include<math.h>']
+operators=['+','-','*','/','%','+=','-=','^=','/=','++','--','!=','&&','||','(',')','[',']','{','}','=']
+variables=['a','b','c','d','e','f','h',]
+all=[]
+list1=[]
+keywords_list=[]
+preprocessor_list=[]
+operators_list=[]
+variables_list=[]
+with(open('input.c','r')) as f:
+    for line in f:
+        for word in line.split():
+            list1.append(word)
+for word in list1:
+    if word in keywords:
+        if word not in keywords_list:
+            keywords_list.append(word)
+    elif word in preprocessor:
+        if word not in preprocessor_list:
+            preprocessor_list.append(word)
+    elif word in operators:
+        if word not in operators_list:
+            operators_list.append(word)
+    elif word in variables:
+        if word not in variables_list:
+            variables_list.append(word)
+    else:
+        all.append(word)
+print("Keywords : ",keywords_list)
+print("Preprocessor : ",preprocessor_list)
+print("Operators : ",operators_list)
+print("Variables : ",variables_list)
+

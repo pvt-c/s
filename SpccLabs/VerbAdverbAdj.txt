@@ -1,0 +1,21 @@
+%{
+    #include<stdio.h>
+    #include<stdlib.h>
+
+%}
+
+%%
+lovely    {print("\nadjective: lovely");}
+eat    {print("\nverb: eat");}
+fast    {print("\nadverb: fast");}
+
+%%
+
+int yywrap(void){
+    return 1;
+}
+
+int main(){
+    yyin=fopen("ip.txt","r");
+    yylex();
+}

@@ -1,0 +1,47 @@
+from tabulate import tabulate
+
+startSymbol = 'E'
+separator = '->'
+epsilon = 'e'
+terminals = ['i', '+', '*', '(', ')', '$']
+variables = ['E', 'L', 'T', 'K', 'F']
+parseTable=[['', 'i', '+', '*', '(', ')', '$'],
+            ['E', 'E -> TL', '', '', 'E -> TL', '', ''],
+            ['L', '', 'L -> +TL', '', '', 'L -> e', 'L -> e'],
+            ['T', 'T -> FK', '', '', 'T -> FK', '', ''],
+            ['K', '', 'K -> e', 'K -> *FK', '', 'K -> e', 'K -> e'],
+            ['F', 'F -> i', '', '', 'F -> (E)', '', '']]
+valid = True
+while valid:
+    ipString = input("\nEnter string to parse : ")
+    ipString = ipString + '$'
+    stack = '$' + startSymbol
+    flag = True
+    parseString = []
+    while flag:
+        b = stack[-1]
+        a = ipString[0]
+        if a == b == '$':
+            parseString[-1][2] = 'String accepted'
+            flag = False
+        elif a == b:
+            stack = stack[:-1]
+            ipString = ipString[1:]
+            parseString.append([stack, ipString, f'Pop {a}'])
+        else:
+            if (b == epsilon):
+                stack = stack[:-1]
+                parseString.append([stack, ipString, ''])
+            else:
+                i = variables.index(b) + 1
+                j = terminals.index(a) + 1
+                if parseTable[i][j] == '':
+                    parseString.append([stack, ipString, 'String rejected'])
+                    flag = False
+                    valid = False
+                else:
+                    stack = stack[:-1]
+                    stack = stack + parseTable[i][j].replace(" ", "").split(separator)[1][::-1]
+                    parseString.append([stack, ipString, parseTable[i][j]])
+
+    print(tabulate(parseString, tablefmt="simple_grid"))

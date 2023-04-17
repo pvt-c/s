@@ -1,0 +1,55 @@
+from tabulate import tabulate
+no_of_prod = 5
+separator = '->'
+epsilon = 'e'
+productions = [
+    'E->TL',
+    'L->+TL|e',
+    'T->FK',
+    'K->*FK|e',
+    'F->i|(E)']
+terminals = ['i', '+', '*', '(', ')', '$']
+variables = ['E', 'L', 'T', 'K', 'F']
+FIRST = {
+    'E': ['i', '('],
+    'L': ['+', 'e'],
+    'T': ['i', '('],
+    'K': ['*', 'e'],
+    'F': ['i', '(']}
+FOLLOW = {
+    'E': [')', '$'],
+    'L': [')', '$'],
+    'T': ['+', ')', '$'],
+    'K': ['+', ')', '$'],
+    'F': ['*', '+', ')', '$']}
+parseTable = []
+temp = [''] + terminals
+parseTable.append(temp)
+
+for j in FIRST.keys():
+    row = ['' for x in terminals]
+    row = [j] + row
+    for i in FIRST[j]:
+        for k in terminals:
+            if (i == epsilon):
+                for z in FOLLOW[j]:
+                    if z == k:
+                        row[terminals.index(k) + 1] = f'{j} -> {epsilon}'
+            elif(i == k):
+                production = ''
+                for prod in productions:
+                    if prod.startswith(j):
+                        production = prod
+                        break
+                temp = production.split(separator)[1].split('|')
+                production = temp[0]
+                for x in temp:
+                    if x.startswith(i):
+                        production = x
+                row[terminals.index(k) + 1] = f'{j} -> {production}'
+    parseTable.append(row)
+print(variables)
+print(terminals)
+
+print(parseTable)
+print(tabulate(parseTable, tablefmt="simple_grid"))

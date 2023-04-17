@@ -1,0 +1,23 @@
+%{
+   #include<stdio.h>
+   int print=0,scan=0;
+%}
+
+%%
+"printf"  {print++}
+"scanf"   {scan++}
+\n|.      { }
+%%
+
+int yywrap(void){
+    return 0;
+}
+
+int main(){
+    yyin=fopen("ip.txt","r");
+    yylex();
+    printf("\n No of printf statements: %d",print);
+    printf("\n No of f statements: %d\n",scan);
+
+
+}
